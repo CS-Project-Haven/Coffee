@@ -6,14 +6,13 @@ public class User {
     private String name;
     private double balance;
     private boolean hasCoffee;
-    ArrayList<Coffee> coffees;
+    ArrayList coffees = new ArrayList<>();
 
     public User(Long id, String name, double balance, boolean hasCoffee) {
         this.id = id;
         this.name = name;
         this.balance = balance;
         this.hasCoffee = hasCoffee;
-        this.coffees = new ArrayList<>();
     }
 
     public User() {
@@ -44,7 +43,7 @@ public class User {
         this.balance = balance;
     }
 
-    public boolean isHasCoffee() {
+    public boolean hasCoffee() {
         return hasCoffee;
     }
 

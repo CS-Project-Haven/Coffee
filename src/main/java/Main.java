@@ -46,13 +46,14 @@ public class Main {
     }
 
     public static void drinkCoffee(User user){
-        if (user.isHasCoffee()) {
+        if (user.hasCoffee()) {
             if (user.getCoffees().size() > 1) {
                 System.out.println(String.format("Which coffee would you like to drink:"));
                 for (Coffee coffee:user.getCoffees()) {
                     System.out.println(coffee.getName());
                 }
                 String choice = userInput.nextLine();
+                // Complete this method to choose the coffee to be drunk.
 
             }
             System.out.println(String.format("%s drinks their coffee", user.getName()));
@@ -71,7 +72,7 @@ public class Main {
             receiptString += "---------------------------------------------------\n";
             receiptString += String.format("Coffee: %s(%s)", coffee.getName(), coffee.getSize());
             receiptString += String.format("\nThe cost is: £%s", (Math.round(coffee.calculateCost(coffee.getSize()) * 100.0) / 100.0 ));
-            user.coffees.add(coffee);
+            user.getCoffees().add(coffee);
             user.setHasCoffee(true);
             return receiptString;
         }
