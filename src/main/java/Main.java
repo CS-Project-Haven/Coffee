@@ -2,20 +2,20 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static Coffee[] coffeesInMenu = new Coffee[] { new Espresso('S'), new Macchiato('S'), new Latte('S'), new Cappuccino('S'), new Mocha('S') };
-    private static Scanner userInput = new Scanner(System.in);
+    private static final Coffee[] coffeesInMenu = new Coffee[] { new Espresso('S'), new Macchiato('S'), new Latte('S'), new Cappuccino('S'), new Mocha('S') };
+    private static final Scanner userInput = new Scanner(System.in);
 
     public static void printMenu() {
-        String menuString = "----------------Welcome to Java Express----------------\n";
-        menuString += "-------------------------------------------------------\n";
-        menuString +=  String.format("%25s%12s%12s", "SMALL", "MEDIUM", "LARGE") + "\n";
-        menuString += "-------------------------------------------------------\n";
+        StringBuilder menuString = new StringBuilder("----------------Welcome to Java Express----------------\n");
+        menuString.append("-------------------------------------------------------\n");
+        menuString.append(String.format("%25s%12s%12s", "SMALL", "MEDIUM", "LARGE")).append("\n");
+        menuString.append("-------------------------------------------------------\n");
         for (int i = 0; i < coffeesInMenu.length; i++) {
-            menuString += String.format("%d. %12s %8.2f %10.2f %12.2f", (i + 1), coffeesInMenu[i].getName(),
-                            coffeesInMenu[i].calculateCost('S'), coffeesInMenu[i].calculateCost('M'),
-                            coffeesInMenu[i].calculateCost('L')) + "\n";
+            menuString.append(String.format("%d. %12s %8.2f %10.2f %12.2f", (i + 1), coffeesInMenu[i].getName(),
+                    coffeesInMenu[i].calculateCost('S'), coffeesInMenu[i].calculateCost('M'),
+                    coffeesInMenu[i].calculateCost('L'))).append("\n");
         }
-        menuString += "-------------------------------------------------------";
+        menuString.append("-------------------------------------------------------");
         System.out.println(menuString);
     }
 
@@ -47,19 +47,24 @@ public class Main {
 
     public static void drinkCoffee(User user){
         if (user.hasCoffee()) {
+            int i = 0;
             if (user.getCoffees().size() > 1) {
-                System.out.println(String.format("Which coffee would you like to drink:"));
-                for (Coffee coffee:user.getCoffees()) {
-                    System.out.println(coffee.getName());
+                System.out.println("Which coffee would you like to drink:");
+                for (i = 0; i < user.getCoffees().size(); i++) {
+                    System.out.printf("%s. %n", user.getCoffees().get(i));
                 }
-                String choice = userInput.nextLine();
-                // Complete this method to choose the coffee to be drunk.
-
+                int choice = Integer.parseInt(userInput.nextLine());
+                System.out.printf("%s drinks their %s%n", user.getName(), user.getCoffees().get(choice));
+                if (user.getCoffees().size() != 1) {
+                    user.setHasCoffee(false);
+                }
+            } else {
+                System.out.printf("%s drinks their %s%n", user.getName(), user.getCoffees().get(i).getClass().getName());
+                user.getCoffees().clear();
+                user.setHasCoffee(false);
             }
-            System.out.println(String.format("%s drinks their coffee", user.getName()));
-            user.setHasCoffee(false);
         } else {
-            System.out.println(String.format("Sorry %s, you don't have any coffee...", user.getName()));
+            System.out.printf("Sorry %s, you don't have any coffee...%n", user.getName());
         }
     }
 
@@ -91,38 +96,36 @@ public class Main {
     }
 
     public static void menuSelection(User user){
-        System.out.println(String.format("-------------What would you like to do %s?-------------\n", user.getName()));
+        System.out.printf("-------------What would you like to do %s?-------------\n%n", user.getName());
         System.out.println("-------------------------------------------------------\n");
-        System.out.println("1. Buy Coffee\n" +
-                "2. Drink Coffee\n" +
-                "3. Check Balance\n" +
-                "4. Leave Cafe");
+        System.out.println("""
+                1. Buy Coffee
+                2. Drink Coffee
+                3. Check Balance
+                4. Leave Cafe""");
 
         String menuChoice = userInput.nextLine();
         switch (menuChoice) {
-            case "1":
+            case "1" -> {
                 printMenu();
                 System.out.println(generateReceipt(user, coffeeSelection()));
                 menuSelection(user);
-                break;
-            case "2":
+            }
+            case "2" -> {
                 drinkCoffee(user);
                 menuSelection(user);
-                break;
-            case "3":
+            }
+            case "3" -> {
                 checkBalance(user);
                 menuSelection(user);
-                break;
-            case "4":
-                System.out.println("See you again!");
-                break;
+            }
+            case "4" -> System.out.println("See you again!");
         }
     }
 
     public static void checkBalance(User user) {
         Double balance = user.getBalance();
-        balance.toString();
-        System.out.println(String.format("Your current balance: £%s", balance));
+        System.out.printf("Your current balance: £%s%n", balance);
     }
 
     public static void main(String[] args) {

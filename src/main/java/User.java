@@ -6,7 +6,7 @@ public class User {
     private String name;
     private double balance;
     private boolean hasCoffee;
-    ArrayList coffees = new ArrayList<>();
+    ArrayList<Object> coffees = new ArrayList<>();
 
     public User(Long id, String name, double balance, boolean hasCoffee) {
         this.id = id;
@@ -51,11 +51,11 @@ public class User {
         this.hasCoffee = hasCoffee;
     }
 
-    public ArrayList<Coffee> getCoffees() {
+    public ArrayList getCoffees() {
         return coffees;
     }
 
-    public void setCoffees(ArrayList<Coffee> coffees) {
+    public void setCoffees(ArrayList<Object> coffees) {
         this.coffees = coffees;
     }
 
