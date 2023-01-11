@@ -51,16 +51,17 @@ public class Main {
             if (user.getCoffees().size() > 1) {
                 System.out.println("Which coffee would you like to drink:");
                 for (i = 0; i < user.getCoffees().size(); i++) {
-                    System.out.printf("%s. %n", user.getCoffees().get(i));
+                    System.out.printf("%d. %s%n", i + 1, user.getCoffees().get(i).getClass().getName());
                 }
                 int choice = Integer.parseInt(userInput.nextLine());
-                System.out.printf("%s drinks their %s%n", user.getName(), user.getCoffees().get(choice));
-                if (user.getCoffees().size() != 1) {
+                System.out.printf("%s drinks their %s%n", user.getName(), user.getCoffees().get(choice - 1).getClass().getName());
+                user.getCoffees().remove(i);
+                if (user.getCoffees().size() < 2) {
                     user.setHasCoffee(false);
                 }
             } else {
                 System.out.printf("%s drinks their %s%n", user.getName(), user.getCoffees().get(i).getClass().getName());
-                user.getCoffees().clear();
+                user.getCoffees().remove(i);
                 user.setHasCoffee(false);
             }
         } else {
@@ -85,7 +86,7 @@ public class Main {
 
     public static boolean affordable(User user, Coffee coffee){
         double balance = user.getBalance();
-        balance = Math.round(balance * 100.0) / 100.0;
+        balance = (double) Math.round(balance * 100.0) / 100.0;
         if (balance < coffee.calculateCost(coffee.getSize())) {
             return false;
         } else {
@@ -125,7 +126,7 @@ public class Main {
 
     public static void checkBalance(User user) {
         Double balance = user.getBalance();
-        System.out.printf("Your current balance: £%s%n", balance);
+        System.out.printf("Your current balance: £%s%n", (double) Math.round(balance * 100.0) / 100.0);
     }
 
     public static void main(String[] args) {
